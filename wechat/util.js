@@ -5,7 +5,7 @@
 
 var xml2js=require('xml2js');
 var Promise=require('bluebird');
-var tpl=require('./tpl.js')；
+var tpl=require('./tpl.js');
 
 exports.parseXMLAsync=function (xml) {
     return new Promise(function (resolve,reject) {
