@@ -1,4 +1,8 @@
 'use strict'
+var config=require('./config.js');
+var Wechat=require('./wechat/wechat.js');
+
+var wechatApi=new Wechat(config.wechat);
 
 exports.reply=function *(next){
 	// body...
@@ -45,8 +49,49 @@ exports.reply=function *(next){
 				picurl:'http://i.shangc.net/2017/0709/20170709010129139.jpg',
 				url:'https://nodejs.org/'
 			}]
+		}else if(content==='5'){
+			var data=yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg');
+
+			reply={
+				type:'image',
+				media_id:data.media_id
+			}
+		}else if(content==='6'){
+			var data=yield wechatApi.uploadMaterial('video',__dirname+'/6.mp4');
+			reply={
+				type:'video',
+				media_id:data.media_id,
+				title:'上传的电影',
+				description:'这不是你想象中的电影'
+			}
+		}else if(content==='7'){
+			var data=yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg');
+			reply={
+				type:'music',
+				title:'江湖天下',
+				description:'射雕英雄传片中曲',
+				MUSIC_Url:'http://34.214.88.128:8080/7.mp3',
+				media_id:data.media_id
+			}
+		}else if(content==='8'){
+			var data=yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg',{type:'image'});
+
+			reply={
+				type:'image',
+				media_id:data.media_id
+			}
+		}else if(content==='9'){
+			var data=yield wechatApi.uploadMaterial('video',__dirname+'/6.mp4',{
+				type:'video',description:{"title":"很好看","introduction":"我喜欢的"}
+			});
+			reply={
+				type:'video',
+				media_id:data.media_id,
+				title:'上传的电影',
+				description:'这不是你想象中的电影'
+			}
 		}
-		
+
 		this.body=reply;
 	}
 
