@@ -68,9 +68,9 @@ exports.reply=function *(next){
 			var data=yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg');
 			reply={
 				type:'music',
-				title:'江湖天下',
-				description:'射雕英雄传片中曲',
-				MUSIC_Url:'http://34.214.88.128:8080/7.mp3',
+				title:'匆匆那年',
+				description:'匆匆那年看的李一桐',
+				MUSIC_Url:'http://other.web.rf01.sycdn.kuwo.cn/resource/n2/66/79/3849065227.mp3',
 				media_id:data.media_id
 			}
 		}else if(content==='8'){
@@ -82,7 +82,7 @@ exports.reply=function *(next){
 			}
 		}else if(content==='9'){
 			var data=yield wechatApi.uploadMaterial('video',__dirname+'/6.mp4',{
-				type:'video',description:{"title":"很好看","introduction":"我喜欢的"}
+				type:'video',description:{"title":"my love","introduction":"my love too"}
 			});
 			reply={
 				type:'video',
@@ -90,6 +90,57 @@ exports.reply=function *(next){
 				title:'上传的电影',
 				description:'这不是你想象中的电影'
 			}
+		}else if(content==='10'){
+			var picData=yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg',{});
+			var media={
+				articles: [{
+				title: '李一桐',
+				thumb_media_id: picData.media_id,
+				author: 'kzz',
+				digest: '没有摘要',
+				show_cover_pic: 1,
+				content: '李一桐好美啊',
+				content_source_url: 'https://github.com'
+				}]
+			}
+
+			var data=yield wechatApi.uploadMaterial('news',media,{});
+
+			data =yield wechatApi.fetchMaterial(data.media_id,'image',{});
+
+			console.log(data);
+			var items=data.news_item;
+			var news=[];
+			items.forEach(function(item){
+				news.push({
+					title:item.title,
+					description:item.digest,
+					picurl:picData.url,
+					url:item.url
+				});
+			})
+			reply=news;
+		}else if (content==='11') {
+			var data=yield wechatApi.countMaterial();
+			var list=yield wechatApi.batchMaterial({
+				type:'image',
+				offset:0,
+				count:2
+			});
+			console.log(JSON.stringify(data));
+			console.log(list);
+			reply='1';
+		}else if(content==='12'){
+			var list=yield wechatApi.batchMaterial({
+				type:'image',
+				offset:0,
+				count:1
+			});
+			var mediaId=list.item[0].media_id;
+			var result=yield wechatApi.deleteMaterial(mediaId);
+			var data=yield wechatApi.countMaterial();
+			console.log(JSON.stringify(data));
+			reply='删除了一个永久图片素材';
 		}
 
 		this.body=reply;
