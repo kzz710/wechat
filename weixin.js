@@ -141,6 +141,32 @@ exports.reply=function *(next){
 			var data=yield wechatApi.countMaterial();
 			console.log(JSON.stringify(data));
 			reply='删除了一个永久图片素材';
+		}else if (content==='13') {
+			var data=yield wechatApi.createTag('帅');
+			console.log('新分组 帅');
+			console.log(data);
+			yield wechatApi.batchTag(data.tag.id,[message.FromUserName]);
+			var tagList=yield wechatApi.getIdList(message.FromUserName);
+			console.log(tagList);
+			reply='已经分配好标签';
+		}else if (content==='14') {
+			var user=yield wechatApi.getUserInfo(message.FromUserName);
+			console.log(user);
+			var openIds=[
+				{
+					openid:message.FromUserName,
+					lang:'en'
+				}
+			]
+			var users=yield wechatApi.getUserInfo(openIds);
+
+			console.log(users);
+
+			reply=JSON.stringify(user);
+		}else if(content==='15'){
+			var userList=yield wechatApi.getListUser();
+			console.log(userList);
+			reply=userList.total;
 		}
 
 		this.body=reply;
