@@ -685,7 +685,7 @@ Wechat.prototype.getUserInfo=function (openIds,lang) {
                     body:{user_list:openIds}
                 }
             }else {
-                var url=api.user.getInfo+'access_token='+data.access_token+'&openid='+openId+'&lang='+lang;
+                var url=api.user.getInfo+'access_token='+data.access_token+'&openid='+openIds+'&lang='+lang;
                 var options={
                     method:'GET',
                     url:url,

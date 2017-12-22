@@ -142,7 +142,7 @@ exports.reply=function *(next){
 			console.log(JSON.stringify(data));
 			reply='删除了一个永久图片素材';
 		}else if (content==='13') {
-			var data=yield wechatApi.createTag('帅');
+			var data=yield wechatApi.createTag('beaauty');
 			console.log('新分组 帅');
 			console.log(data);
 			yield wechatApi.batchTag(data.tag.id,[message.FromUserName]);

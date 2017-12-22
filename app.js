@@ -18,4 +18,4 @@ var app=new Koa();
 
 app.use(wechat(config.wechat,weixin.reply));
 
-app.listen(process.env.PORT);
+app.listen(1234);
