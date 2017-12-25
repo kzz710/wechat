@@ -1,6 +1,7 @@
 'use strict'
 var config=require('./config.js');
 var Wechat=require('./wechat/wechat.js');
+var menu=require('./menu.js');
 
 var wechatApi=new Wechat(config.wechat);
 
@@ -142,8 +143,8 @@ exports.reply=function *(next){
 			console.log(JSON.stringify(data));
 			reply='删除了一个永久图片素材';
 		}else if (content==='13') {
-			var data=yield wechatApi.createTag('beaauty');
-			console.log('新分组 帅');
+			var data=yield wechatApi.createTag('hansame');
+			console.log('新分组 hansame');
 			console.log(data);
 			yield wechatApi.batchTag(data.tag.id,[message.FromUserName]);
 			var tagList=yield wechatApi.getIdList(message.FromUserName);
@@ -167,6 +168,55 @@ exports.reply=function *(next){
 			var userList=yield wechatApi.getListUser();
 			console.log(userList);
 			reply=userList.total;
+		}else if(content==='16'){
+			var list=yield wechatApi.batchMaterial({
+				type:'news',
+				offset:0,
+				count:1
+			});
+			var mediaId=list.item[0].media_id;
+			var msg={
+				media_id:mediaId
+			}
+			var tagList=yield wechatApi.getIdList(message.FromUserName);
+			var tagid=tagList.tagid_list[0];
+			var data=yield wechatApi.sendMsgByTag('mpnews',msg,tagid);
+			console.log(data);
+			reply='hahaha,it is ok!!!';
+		}else if(content==='17'){
+			var list=yield wechatApi.batchMaterial({
+				type:'news',
+				offset:0,
+				count:1
+			});
+			var mediaId=list.item[0].media_id;
+			var msg={
+				media_id:mediaId
+			}
+
+			var text={
+				'content':'我到底帅不帅'
+			}
+			var msgData=yield wechatApi.previewSendMsg('mpnews',msg,message.FromUserName);
+			console.log(msgData);
+			reply='Yeah';
+		}else if(content==='18'){
+			var list=yield wechatApi.batchMaterial({
+				type:'news',
+				offset:0,
+				count:1
+			});
+			var mediaId=list.item[0].media_id;
+			var msg={
+				media_id:mediaId
+			}
+			var tagList=yield wechatApi.getIdList(message.FromUserName);
+			var tagid=tagList.tagid_list[0];
+			var msgData=yield wechatApi.sendMsgByTag('mpnews',msg,tagid);
+			console.log(msgData);
+			var resultData=yield wechatApi.getSendMsgStatus(msgData.msg_id);
+			console.log(resultData);
+			reply='hahaha';
 		}
 
 		this.body=reply;
