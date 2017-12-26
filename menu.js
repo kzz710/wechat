@@ -37,21 +37,21 @@ module.exports={
             {
                 "type": "pic_sysphoto", 
                 "name": "系统拍照发图", 
-                "key": "rselfmenu_1_0", 
+                "key": "rselfmenu_1_0" 
                
              }, 
             {
                 "type": "pic_photo_or_album", 
                 "name": "拍照或者相册发图", 
-                "key": "rselfmenu_1_1", 
-                
+                "key": "rselfmenu_1_1"
+               
             }, 
             {
                 "type": "pic_weixin", 
                 "name": "微信相册发图", 
-                "key": "rselfmenu_1_2", 
+                "key": "rselfmenu_1_2"
                 
-            }，
+            },
             {
             	"name": "发送位置", 
             	"type": "location_select", 

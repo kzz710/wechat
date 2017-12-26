@@ -5,6 +5,8 @@ var menu=require('./menu.js');
 
 var wechatApi=new Wechat(config.wechat);
 
+
+
 exports.reply=function *(next){
 	// body...
 	var message=this.weixin;
@@ -26,6 +28,33 @@ exports.reply=function *(next){
 			console.log('关注后扫描二维码'+message.EventKey+' '+message.Ticket);
 			this.body='看到你扫了一下哦';
 		}else if (message.Event='VIEW') {
+			this.body='你点击了菜单中的链接：'+message.EventKey;
+		}else if (message.Event='scancode_push') {
+			console.log(message.ScanCodeInfo.ScanType);
+			console.log(message.ScanCodeInfo.ScanResult);
+			this.body='你点击了菜单中的链接：'+message.EventKey;
+		}else if (message.Event='scancode_waitmsg') {
+			console.log(message.ScanCodeInfo.ScanType);
+			console.log(message.ScanCodeInfo.ScanResult);
+			this.body='你点击了菜单中的链接：'+message.EventKey;
+		}else if (message.Event='pic_sysphoto') {
+			console.log(message.SendPicsInfo.Count);
+			console.log(message.SendPicsInfo.PicList);
+			this.body='你点击了菜单中的链接：'+message.EventKey;
+		}else if (message.Event='pic_photo_or_album') {
+			console.log(message.SendPicsInfo.Count);
+			console.log(message.SendPicsInfo.PicList);
+			this.body='你点击了菜单中的链接：'+message.EventKey;
+		}else if (message.Event='pic_weixin') {
+			console.log(message.SendPicsInfo.Count);
+			console.log(message.SendPicsInfo.PicList);
+			this.body='你点击了菜单中的链接：'+message.EventKey;
+		}else if (message.Event='location_select') {
+			console.log(message.SendLocationInfo.Location_X);
+			console.log(message.SendLocationInfo.Location_Y);
+			console.log(message.SendLocationInfo.Scale);
+			console.log(message.SendLocationInfo.Label);
+			console.log(message.SendLocationInfo.Poiname);
 			this.body='你点击了菜单中的链接：'+message.EventKey;
 		}
 	}else if (message.MsgType==='text') {
@@ -217,6 +246,10 @@ exports.reply=function *(next){
 			var resultData=yield wechatApi.getSendMsgStatus(msgData.msg_id);
 			console.log(resultData);
 			reply='hahaha';
+		}else if(content==='19'){
+			yield wechatApi.delMenu();
+			yield wechatApi.createMenu(menu);
+			reply='已创建菜单';
 		}
 
 		this.body=reply;
