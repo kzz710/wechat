@@ -57,7 +57,13 @@ exports.reply=function *(next){
 			console.log(message.SendLocationInfo.Poiname);
 			this.body='你点击了菜单中的链接：'+message.EventKey;
 		}
-	}else if (message.MsgType==='text') {
+	}else if(message.MsgType==='voice'){
+		var voiceText=message.Recognition;
+		this.body=voiceText;
+	}else if(message.MsgType==='image'){
+		this.body='收到你发的图片啦';
+	}
+	else if (message.MsgType==='text') {
 		var content=message.Content;
 		var reply='额，你说的 '+message.Content+' 太复杂啦';
 
